@@ -1,43 +1,50 @@
 //BaekJoon_2178
-//¹Ì·Î Å½»ö
+//ë¯¸ë¡œ íƒìƒ‰
 /*
-* Á¦ÇÑ ½Ã°£ : 1s
-* Á¤´ä ºñÀ² : 33.681%
+* ì œí•œ ì‹œê°„ : 1s
+* ì •ë‹µ ë¹„ìœ¨ : 37.511%
 */
 
 #include <iostream>
 using namespace std;
 
+int dx[] = { -1, 0, 1, 0 };
+int dy[] = { 0, 1, 0, -1 };
+bool visit[101][101];
+int maze[101][101] = { 0, };
 int n, m;
-int map[105][105] = { 0, };
-int dp[105][105] = { 0 };
-int d_x[5] = { -1, 0, 1, 0 };
-int d_y[5] = { 0, 1, 0, -1 };
-void explore(int x, int y) {
-	for (int i = 0; i < 4; i++) {
-		int n_x = x + d_x[i];
-		int n_y = y + d_y[i];
-		if (n_x<1 || n_x>n || n_y<1 || n_y>m) continue;
-		if (map[n_x][n_y] == 0) continue;
-		if (dp[n_x][n_y] == 0 || dp[n_x][n_y] > dp[x][y] + 1) {
-			dp[n_x][n_y] = dp[x][y] + 1;
-			explore(n_x, n_y);
-		}
+int ans = 10000;
+
+void getOut(int x, int y, int cnt) {
+	visit[x][y] = true;
+	if (x == n-1 && y == m-1) {
+		if (ans > cnt) ans = cnt;
+		visit[x][y] = false;
+		return;
 	}
+	for (int i = 0; i < 4; i++) {
+		int to_x = x + dx[i];
+		int to_y = y + dy[i];
+		if (to_x <0 || to_x == n || to_y <0 || to_y == m) continue;
+		if (maze[to_x][to_y] == 0 || visit[to_x][to_y]) continue;
+		getOut(to_x, to_y, cnt + 1);
+	}
+	visit[x][y] = false;
 	return;
 }
+
 int main() {
-	char temp[101];
-	scanf("%d %d", &n, &m);
-	for (int i = 1; i <= n; i++) {
-		scanf("%s", temp);
-		for (int j = 1; j <= m; j++) {
-			map[i][j] = temp[j - 1] - '0';
+	char c[101];
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) {
+		cin >> c;
+		for (int j = 0; j < m; j++) {
+			maze[i][j] = c[j] - '0';
 		}
 	}
-	dp[1][1] = 1;
-	explore(1, 1);
-	cout << dp[n][m] << endl;
+	
+	getOut(0, 0, 1);
+	cout << ans << endl;
 
 	return 0;
 }

@@ -1,66 +1,44 @@
 //BaekJoon_5639
-//ÀÌÁø °Ë»ö Æ®¸®
+//ì´ì§„ ê²€ìƒ‰ íŠ¸ë¦¬
 /*
-* Á¦ÇÑ ½Ã°£ : 1s
-* Á¤´ä ºñÀ² : 41.194%
+* ì œí•œ ì‹œê°„ : 1s
+* ì •ë‹µ ë¹„ìœ¨ : 38.195%
 */
 
 #include <iostream>
 using namespace std;
+#define MAX 10001
 
-struct node {
-	int num;
-	node* left = NULL;
-	node* right = NULL;
-};
-
-node* tree = NULL;
-
-void make_bst(int now) {
-	node *new_node = (node*)malloc(sizeof(node));
-	new_node->num = now;
-	new_node->left = NULL;
-	new_node->right = NULL;
-	
-	if (tree == NULL)
-		tree = new_node;
-	else {
-		node* move = tree;
-		// À§Ä¡±îÁö ÀÌµ¿
-		while (true) {
-			if (move->num < now) {
-				if (move->right != NULL) move = move->right;
-				else {
-					move->right = new_node;
-					return;
-				}
-			}
-			else {
-				if (move->left != NULL)	move = move->left;
-				else {
-					move->left = new_node;
-					return;
-				}
-			}
-		}
+void postOrder(int* tree, int root) {
+	if (tree[root]) {
+		postOrder(tree, root * 2);
+		postOrder(tree, root * 2 + 1);
+		cout << tree[root] << endl;
 	}
-}
-
-void postorder(node* n) {
-	if (n == NULL) return;
-	postorder(n->left);
-	postorder(n->right);
-	printf("%d\n", n->num);
-	return;
 }
 
 int main() {
-	int temp;
+	int tree[MAX];
+	int temp = 0;  int root = 1; int child = 2;
+	int count = 0;
+
 	while (cin >> temp) {
-		make_bst(temp);
+		if (root == 1) tree[root] = temp;
+		else if (tree[root] > temp) {
+			child = root * 2;
+			tree[child] = temp;
+			root = child;
+		}
+		else if (tree[root] < temp) {
+			child = (root * 2) + 1;
+			tree[child] = temp;
+			root = root / 2;
+		}
+		count++;
 	}
 
-	postorder(tree);
-	
+	postOrder(tree, 1);
+
+
 	return 0;
 }

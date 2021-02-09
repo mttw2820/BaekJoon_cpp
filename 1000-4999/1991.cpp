@@ -1,67 +1,77 @@
 //BaekJoon_1991
-//Æ®¸® ¼øÈ¸
+//íŠ¸ë¦¬ ìˆœíšŒ
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 62.977%
+* ì œí•œ ì‹œê°„ : 2s
+* ì •ë‹µ ë¹„ìœ¨ : 63.162%
 */
 
 #include <iostream>
 using namespace std;
+#define MAX 30
 
-// 26°³ ³ëµå°¡ skewed µÇ¾îÀÖÀ» °æ¿ì ¹è¿­·Î ÇÏ¸é 2^26°³ ÇÊ¿ä
-// ¹è¿­·Î ÇÏ¸é °ø°£ ³¶ºñ°¡ ½ÉÇÒ ¼ö ÀÖÀ¸´Ï±î ÀÎÁ¢ ¸®½ºÆ® »ç¿ë
-
+typedef struct node* tree_ptr;
 struct node {
-	char now = NULL;
-	char left = NULL;
-	char right = NULL;
+	char data;
+	tree_ptr left;
+	tree_ptr right;
 };
 
-node tree[30];
-
-void pre_order(node node) {
-	printf("%c", node.now);
-	if(node.left!=NULL)	pre_order(tree[node.left - 'A']);
-	if (node.right!= NULL) pre_order(tree[node.right - 'A']);
-	return;
+void preOrder(tree_ptr tree) {
+	if (tree) {
+		cout << tree->data;
+		preOrder(tree->left);
+		preOrder(tree->right);
+	}
 }
 
-void in_order(node node) {
-	if (node.left != NULL)	in_order(tree[node.left - 'A']);
-	printf("%c", node.now);
-	if (node.right != NULL) in_order(tree[node.right - 'A']);
-	return;
+void inOrder(tree_ptr tree) {
+	if (tree) {
+		inOrder(tree->left);
+		cout << tree->data;
+		inOrder(tree->right);
+	}
 }
 
-void post_order(node node) {
-	if (node.left != NULL)	post_order(tree[node.left - 'A']);
-	if (node.right != NULL) post_order(tree[node.right - 'A']);
-	printf("%c", node.now);
-	return;
+void postOrder(tree_ptr tree) {
+	if (tree) {
+		postOrder(tree->left);
+		postOrder(tree->right);
+		cout << tree->data;
+	}
 }
 
 int main() {
-	int n;
-	cin >> n;
-	char parent = '.', left = '.', right = '.';
-	node temp;
-	for (int i = 0; i < n; i++) {
-		cin >> parent >> left >> right;
-		temp.now = parent;
-		if (left != '.') temp.left = left;
-		else temp.left = NULL;
-		if (right != '.') temp.right = right;
-		else temp.right = NULL;
+	struct node Tree[MAX];
+	char temp[3];
+	int N, root = 0;
 
-		tree[parent - 'A'] = temp;
+	cin >> N;
+
+	for (int i = 0; i < N; i++) {
+		cin >> temp[0] >> temp[1] >> temp[2];
+		root = temp[0] - 'A';
+
+		Tree[root].data = temp[0];
+
+		if (temp[1] == '.') {
+			Tree[root].left = NULL;
+		}
+		else {
+			Tree[root].left = &Tree[temp[1] - 'A'];
+			Tree[temp[1] - 'A'].data = temp[1];
+		}
+		if (temp[2] == '.') {
+			Tree[root].right = NULL;
+		}
+		else {
+			Tree[root].right = &Tree[temp[2] - 'A'];
+			Tree[temp[2] - 'A'].data = temp[2];
+		}
 	}
 
-	pre_order(tree[0]);
-	cout << endl;
-	in_order(tree[0]);
-	cout << endl;
-	post_order(tree[0]);
-	cout << endl;
+	preOrder(Tree); cout << endl;
+	inOrder(Tree); cout << endl;
+	postOrder(Tree); cout << endl;
 
 	return 0;
 }

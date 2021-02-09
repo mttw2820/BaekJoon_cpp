@@ -1,62 +1,64 @@
 //BaekJoon_2751
-//¼ö Á¤·ÄÇÏ±â 2
+//ìˆ˜ ì •ë ¬í•˜ê¸° 2
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 31.744%
+* ì œí•œ ì‹œê°„ : 2s
+* ì •ë‹µ ë¹„ìœ¨ : 30.121%
 */
 
 #include <iostream>
-#include <vector>
 using namespace std;
+#define MAX 1000000
 
-vector<int> numbers;
-
-void MergeSort(int start, int end) {	// Àç±ÍÀû Á¤·Ä°úÁ¤
-	
-	int mid = (start + end) / 2;
-	// ÂÉ°¶ ¼ö ÀÖ´ÂÁö È®ÀÎ
-	if (start == end) return;
-	else {		// ÂÉ°³±â
-		MergeSort(start, mid);
-		MergeSort(mid + 1, end);
+//ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+void makeHeap(int nums[], int root, int n) {
+	int child, temp = nums[root];
+	child = 2 * root;
+	while (child <= n) {
+		if ((child < n) && (nums[child] < nums[child + 1]))
+			child++;
+		if (temp > nums[child]) break;
+		else {
+			nums[child / 2] = nums[child];
+			child *= 2;
+		}
 	}
-
-	// ÇÕÄ¡±â Á¤·Ä
-	int s1 = start, s2 = mid + 1;
-	int i = 0;
-	vector<int> after(end - start + 1, 0);
-	for (i = 0; s1 <= mid && s2 <= end; i++) {
-		if (numbers[s1] <= numbers[s2])	after[i] = numbers[s1++];
-		else after[i] = numbers[s2++];
-	}
-	while (s1 <= mid) after[i++] = numbers[s1++];
-	while (s2 <= end) after[i++] = numbers[s2++];
-	
-	for (i = 0; start + i <= end; i++) {
-		numbers[start + i] = after[i];
-	}
-
-	return;
+	nums[child / 2] = temp;
 }
 
+void swap(int &a, int &b) {
+	int temp = a;
+	a = b;
+	b = temp;
+}
 
+//ï¿½ï¿½ï¿½ï¿½Æ®
+void HeapSort(int nums[], int N) {
+	int i;
 
-int main() {
-	int n = 0;
-	cin >> n;
-	
-	int in = 0;
-	for (int i = 0; i < n; i++) {
-		scanf("%d", &in);
-		numbers.push_back(in);
+	for (i = N / 2; i > 0; i--)
+		makeHeap(nums, i, N);
+	for (i = N - 1; i > 0; i--) {
+		swap(nums[1], nums[i + 1]);
+		makeHeap(nums, 1, i);
 	}
-	
-	// MERGE SORTING
-	MergeSort(0, n - 1);
+}
 
-	// Ãâ·Â
-	for (int i = 0; i < n; i++)
-		printf("%d\n", numbers[i]);
+int main()
+{
+	int N = 0;
+	int* nums = new int[MAX];
+
+
+	cin >> N;
+	for (int i = 1; i < N+1; i++)
+		cin >> nums[i];
+
+	HeapSort(nums, N);
+	
+	for (int i = 1; i < N+1; i++)
+		cout << nums[i] << endl;
+
+	delete[] nums;
 
 	return 0;
 }

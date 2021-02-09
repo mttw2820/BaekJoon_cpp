@@ -1,39 +1,64 @@
 //BaekJoon_4335
-//¼ıÀÚ ¸ÂÃß±â
+//ìˆ«ì ë§ì¶”ê¸°
 /*
-* Á¦ÇÑ ½Ã°£ : 1s
-* Á¤´ä ºñÀ² : 40.146%
+* ì œí•œ ì‹œê°„ : 1s
+* ì •ë‹µ ë¹„ìœ¨ : 31.728%
 */
+
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
+int check(int);
+vector <int> A;		// honest = 0, dishonest = 1
+int up[10], down[10], u = 0, d = 0;
 int main() {
-	int ques, min = 1, max = 10, flag = 0;
-	char ans[10];
-	while (true) {
-		scanf("%d", &ques);
-		if (ques == 0) break;
-		scanf("%s", &ans);
-		scanf("%s", &ans);
-
-		if (ans[0] == 'h') {	//"too high"
-			if (ques <= min) flag = -1;
-			if (ques <= max) max = ques - 1;
+	
+	while (1) {
+		string temp, ans;
+		int qst;
+		cin >> qst;
+		if (qst == 0) break;
+		cin >> temp >> ans;
+		if (ans == "high") {
+			up[u++] = qst;
 		}
-		else if (ans[0] == 'l') {	//"too low"
-			if (ques >= max) flag = -1;
-			if (ques >= min) min = ques + 1;
+		else if (ans == "low") {
+			down[d++] = qst;
 		}
-		else if (ans[0] == 'o') {
-			if (ques < min || ques > max || max < min) {
-				flag = -1;
-			}
-			if (flag == -1) printf("Stan is dishonest\n");
-			else printf("Stan may be honest\n");
-			//°ÔÀÓ Á¾·á, ÃÊ±âÈ­ °úÁ¤
-			flag = 0;	min = 1;	 max = 10;
+		else if (ans == "on") { 
+			int flag = check(qst);
+			A.push_back(flag);
+			u = d = 0;
 		}
+	}
+	int s = A.size();
+	for (int i = 0; i < s; i++) {
+		if (A[i] == 1) cout << "Stan is dishonest" << endl;
+		else if (A[i] == 0) cout << "Stan may be honest" << endl;
 	}
 
 	return 0;
 }
+
+int check(int x) {
+	int a = 10, b = 0;		// a= max; b=min;
+	if (u != 0) {
+		a = up[0];
+		for (int i = 1; i < u; i++) {
+			if (up[i] > up[i - 1]) a = up[i];
+		}
+	}
+	if (d != 0) {
+		b = down[0];
+		for (int i = 1; i < d; i++) {
+			if (down[i] < down[i - 1]) b = down[i];
+		}
+	}
+	
+	if (b < x && x < a) return 0;
+	else return 1;
+}
+

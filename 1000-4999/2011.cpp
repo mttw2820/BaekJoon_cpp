@@ -1,45 +1,40 @@
 //BaekJoon_2011
-//¾ÏÈ£ÄÚµå
+//ì•”í˜¸ì½”ë“œ
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 19.762%
+* ì œí•œ ì‹œê°„ : 2s
+* ì •ë‹µ ë¹„ìœ¨ : 19.449%
 */
 
 #include <iostream>
+#include <math.h>
 using namespace std;
 
-char code[5001];
-int dp[5001] = { 0, };
-//dp[i]´Â code[i-1]±îÁö ³ª¿Ã ¼ö ÀÖ´Â ÃÖ´ë ÇØ¼® °æ¿ìÀÇ ¼ö
-int main() {
-	scanf("%s", code);
+int x=0, cnt = 0;
+long long num[5010];
+void code(int p) {
+	if (p <= 0) {
+		cnt++;
+		cnt %= 1000000;
+	}
+	else {
+		code(p - 1);
+		int temp = 10 * num[p] + num[p - 1];
+		if (temp <= 26) code(p - 2);
+	}
+}
 
-	dp[0] = 1; dp[1] = 1;
-	int prev = code[0] - '0';
-	//Ã¹ ±ÛÀÚ°¡ 0ÀÌ¸é ¿À·ù
-	if (prev == 0) {
-		cout << "0" << endl;
-		return 0;
+int main() {
+	long long w;
+	cin >> w;
+	for (int i = 0; w > pow(10, i); i++) {
+		long long temp = pow(10, i + 1);
+		num[i] = (w % temp) / pow(10, i); 
+		x++;
 	}
-	int i = 2;
-	for (i = 2; code[i-1]; i++) {
-		int now = code[i-1] - '0';
-		//0ÀÌ µÎ¹øÀÌ»ó ¿¬¼Ó
-		if (now == 0 && prev == 0) {
-			cout << "0" << endl;
-			return 0;
-		}
-		//ÇÑÀÚ¸® ¼ö ¾ÏÈ£ÀÏ °æ¿ì
-		if (now != 0) {
-			dp[i] = dp[i - 1];
-		}
-		//µÎÀÚ¸® ¼ö ¾ÏÈ£ÀÏ °æ¿ì
-		if ((prev == 1)||(prev == 2 && now <= 6)) {	
-			dp[i] = (dp[i] + dp[i - 2]) % 1000000;
-		}
-		
-		prev = now;
-	}
-	cout << dp[i-1] << endl;
+
+	code(x-1);
+	cout << cnt << endl;
+
+
 	return 0;
 }

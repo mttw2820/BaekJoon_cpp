@@ -1,9 +1,10 @@
 //BaekJoon_1002
-//ÅÍ·¿
+//ï¿½Í·ï¿½
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 18.782%
+* ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ : 2s
+* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : 18.782%
 */
+
 #include <iostream>
 #include <math.h>
 using namespace std;
@@ -22,14 +23,14 @@ int main() {
 			else printf("0\n");
 			continue;
 		}
-		//r1 >= r2°¡ µÇµµ·Ï ¼³Á¤
+		//r1 >= r2ï¿½ï¿½ ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (r1 < r2) {	//SWAP
 			int temp = r1;
 			r1 = r2;
 			r2 = temp;
 		}
-		long long in_range = pow(r1 - r2, 2);	//³»Á¢ÇÏ´Â °æ¿ìÀÇ d °ª
-		long long out_range = pow(r1 + r2, 2); //¿ÜÁ¢ÇÏ´Â °æ¿ìÀÇ d°ª
+		long long in_range = pow(r1 - r2, 2);	//ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ d ï¿½ï¿½
+		long long out_range = pow(r1 + r2, 2); //ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ dï¿½ï¿½
 		if (d > out_range || d < in_range)
 			printf("0\n");
 		else if (d < out_range && d > in_range)

@@ -1,25 +1,27 @@
+//BaekJoon_2579
+//계단 오르기
+/*
+* 제한 시간 : 1s
+* 정답 비율 : 35.975%
+*/
+
 #include <iostream>
 using namespace std;
-#include <algorithm>
-
-int n;
-int stairs[301] = { 0, };
-int point[301][2];
 
 int main() {
+	int n, s[310] = {0, };
 	cin >> n;
-	
-	for (int i = 1; i <= n; i++) {
-		cin >> stairs[i];
+	for (int i = 0; i < n; i++) {
+		cin >> s[i+1];
 	}
 	
-	point[1][0] = stairs[1];
-	point[2][0] = stairs[2];
+	int p[310] = { 0, };
+	p[1] = s[1];
+	p[2] = s[1] + s[2];
+	for (int i = 3; i <= n; i++) {
 
-	for (int i = 2; i <= n; i++) {
-		point[i][1] = point[i - 1][0] + stairs[i];
-		point[i][0] = max(point[i - 2][0], point[i - 2][1]) + stairs[i];
+
 	}
-	cout << max(point[n][0], point[n][1]) << endl;
+	
 	return 0;
 }

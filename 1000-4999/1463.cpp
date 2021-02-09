@@ -1,11 +1,12 @@
 //BaekJoon_1463
-//1·Î ¸¸µé±â
+//1ë¡œ ë§Œë“¤ê¸°
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 32.0%
+* ì œí•œ ì‹œê°„ : 0.15s
+* ì •ë‹µ ë¹„ìœ¨ : 31.890%
 */
 
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -13,8 +14,8 @@ int main() {
 	cin >> n;
 	int cnt[1000000];
 	cnt[1] = 0;
-
-	// n-1 ¶Ç´Â n/2 ¶Ç´Â n/3
+	
+	// n-1 ï¿½Ç´ï¿½ n/2 ï¿½Ç´ï¿½ n/3
 	for (int i = 2; i <= n; i++) {
 		cnt[i] = cnt[i - 1] + 1;
 		if (i % 2 == 0 && cnt[i] > cnt[i / 2] + 1)
@@ -22,7 +23,7 @@ int main() {
 		if (i % 3 == 0 && cnt[i] > cnt[i / 3] + 1)
 			cnt[i] = cnt[i / 3] + 1;
 	}
-
+	
 	cout << cnt[n] << endl;
 
 	return 0;

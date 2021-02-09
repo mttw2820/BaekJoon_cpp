@@ -1,50 +1,49 @@
 //BaekJoon_4949
-//±ÕÇüÀâÈù ¼¼»ó
+//ê· í˜•ì¡íŒ ì„¸ìƒ
 /*
-* Á¦ÇÑ ½Ã°£ : 1s
-* Á¤´ä ºñÀ² : 33.936%
+* ì œí•œ ì‹œê°„ : 1s
+* ì •ë‹µ ë¹„ìœ¨ : 33.185%
 */
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include <stack>
 using namespace std;
 
 int main() {
-	string str;
+	vector<string> ans;
 
-	while (true) {
-		getline(cin, str);
-
-		if ((str.length() == 1) && (str[0] = '.'))
-			break;			// Á¾·á Á¶°Ç
-
+	while (1) {
 		int flag = 0;
-		stack<char> bracket;
-		for (int i = 0; i < str.length(); i++) {
-			if ((str[i] == '(') || str[i] == '[')
-				bracket.push(str[i]);
-			else if ((str[i] == ')') || str[i] == ']') {
-				if (bracket.empty()) {
-					flag = -1;
+		stack<char> s;
+		char c[101];
+		scanf("%[^.\n]s", c);
+		if (c[0] == '.') break;
+		for (int i = 0; i < 101; i++) {
+			if (c[i] == '.') break;
+			else if (c[i] == '(') s.push('(');
+			else if (c[i] == ')') {
+				if (s.empty() || s.top() != '(') {
+					flag = 1;
 					break;
 				}
-				if ((str[i] == ')') && (bracket.top() == '('))
-					bracket.pop();
-				else if ((str[i] == ']') && (bracket.top() == '['))
-					bracket.pop();
-				else {
-					flag = -1;
-					break;
-				}
+				else s.pop();
 			}
-			else continue;
+			else if (c[i] == '[') s.push('[');
+			else if (c[i] == ']') {
+				if (s.empty() || s.top() != '[') {
+					flag = 1;
+					break;
+				}
+				else s.pop();
+			}
 		}
-		if (!bracket.empty()) flag = -1;
-
-		if (flag == -1) cout << "no" << endl;
-		else cout << "yes" << endl;
+		if (flag == 0) ans.push_back("yes");
+		else ans.push_back("no");
+		while (!s.empty()) s.pop();
 	}
-
-	return 0;
+	for (int i = 0; i<int(ans.size()); i++) {
+		cout << ans[i] << endl;
+	}
 }

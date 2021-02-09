@@ -1,56 +1,46 @@
-//BaekJoon_1697
-//¼û¹Ù²ÀÁú
+//BaekJoon_2697
+//ìˆ¨ë°”ê¼­ì§
 /*
-* Á¦ÇÑ ½Ã°£ : 2s
-* Á¤´ä ºñÀ² : 24.762%
+* ì œí•œ ì‹œê°„ : 2s
+* ì •ë‹µ ë¹„ìœ¨ : 24.933%
 */
 
 #include <iostream>
 #include <queue>
 using namespace std;
 
-int visit[100001] = { 0, };
-
 int main() {
-	int start, dest;
-	scanf("%d %d", &start, &dest);
+	int bin, sis;
+	cin >> bin >> sis;
+	int way[200001] = { 0 };
+	bool visit[200001];
+	queue <int> q;
 
-	if (start == dest) {
-		printf("0\n");
-		return 0;
-	}
-
-	int ans = 0;
-	queue<pair<int, int>> q;
-	q.push(make_pair(start, 0));
-	visit[start] = -1;
-	while (!q.empty()) {
-		int now = q.front().first;
-		int step = q.front().second;
+	visit[bin] = false;
+	way[bin] = 0;
+	q.push(bin);
+	while (visit[sis]) {
+		int now = q.front();
 		q.pop();
 
-		// Á¾·áÁ¶°Ç
-		if (now == dest) {
-			ans = step;
-			break;
+		if (visit[now - 1] == true && (now - 1) > 0) {
+			visit[now - 1] = false;
+			way[now - 1] = way[now] + 1;
+			q.push(now - 1);
 		}
-
-		int left = now - 1;
-		int right = now + 1;
-		int tele = now * 2;
-		if (left >= 0 && visit[left]!= -1) {
-			visit[left] = -1;
-			q.push(make_pair(left, step + 1));
+		if (visit[now + 1] == true) {
+			visit[now + 1] = false;
+			way[now + 1] = way[now] + 1;
+			q.push(now + 1);
 		}
-		if (right <= 100000 && visit[right]!=-1) {
-			q.push(make_pair(right, step + 1));
-		}
-		if (now != 0 && tele <= 100000 && visit[tele]!=-1) {
-			q.push(make_pair(tele, step + 1));
+		if (visit[now * 2] == true && now * 2 < sis * 2) {
+			visit[now * 2] = false;
+			way[now * 2] = way[now + 1];
+			q.push(now * 2);
 		}
 	}
 
-	printf("%d\n", ans);
+	cout << way[sis] << endl;
 
 	return 0;
 }

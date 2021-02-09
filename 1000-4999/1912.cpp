@@ -1,20 +1,23 @@
+//BaekJoon_1912
+//연속합
+/*
+* 제한 시간 : 1s
+* 정답 비율 : 29.893%
+*/
+
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
 int main() {
 	int n;
-	int nums[100001];
-	int Msum[100001] = { 0, };
+	int nums[100001] = { 0, };
 	cin >> n;
 	for (int i = 0; i < n; i++) cin >> nums[i];
-	Msum[0] = nums[0];
-	for (int i = 1; i < n; i++) {
-		int a = Msum[i - 1] + nums[i];
-		int b = nums[i];
-		Msum[i] = (a > b) ? a : b;
+	int m = -2000;
+	for (int i = 0; i < n-1; i++) {
+		int temp = nums[i] + nums[i + 1];
+		if (temp > m) m = temp;
 	}
-	sort(Msum, Msum + n);
-	cout << Msum[n-1] << endl;
+	cout << m << endl;
 	return 0;
 }
